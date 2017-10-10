@@ -2,9 +2,14 @@ import matplotlib.pyplot as plt
 import csv
 import numpy as np
 from numpy import linalg
+from scipy.interpolate import interp1d
 
 
 class NoInterpolatedDataException(Exception):
+    pass
+
+
+class WrongWavelengthsInConf(Exception):
     pass
 
 
@@ -46,3 +51,39 @@ class OpusData(object):
                      self.interpolated_data[1],
                      'ro')
             plt.show()
+
+    def gen_interp_waves(self, conf):
+        wunit = (conf.wave_start - conf.wave_end) / (float(conf.iwsize - 1))
+        a = conf.wave_start + wunit
+        iwavenumber = [0] * conf.iwsize
+        for i in xrange(len(iwavenumber)):
+            a -= wunit
+            iwavenumber[i] = a
+        return iwavenumber
+
+    def interpolate_spectra(self, conf):
+        xav, yav = self.raw_data[0], self.raw_data[1]
+        ab_wavenumbers = self.raw_data[0]
+        iwavenumber = self.gen_interp_waves(conf)
+
+        xa_min = min(ab_wavenumbers)
+        xa_max = max(ab_wavenumbers)
+        n_interp = conf.iwsize
+        yi = []
+
+        f2 = interp1d(xav, yav, kind='cubic', assume_sorted=True)
+
+        for k in range(n_interp):
+            if iwavenumber[k] < xa_min:
+                if k == n_interp - 1:
+                    yi.append(yav[0])
+                else:
+                    print("Wrong wavelenghts for interpolating data")
+            elif iwavenumber[k] > xa_max:
+                if k == 0:
+                    yi.append(yav[-1])
+                else:
+                    raise WrongWavelengthsInConf()
+            else:
+                yi.append(f2(iwavenumber[k]))
+        return iwavenumber, yi
