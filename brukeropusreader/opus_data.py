@@ -78,7 +78,7 @@ class OpusData(object):
                 if k == n_interp - 1:
                     yi.append(yav[0])
                 else:
-                    print("Wrong wavelenghts for interpolating data")
+                    print("Wrong wavelengths for interpolating data")
             elif iwavenumber[k] > xa_max:
                 if k == 0:
                     yi.append(yav[-1])

@@ -1,21 +1,40 @@
-## Bruker OPUS binary files reader
-Python scripts in this project allow to read Bruker OPUS propriertary files. You can provide scripts with config file(example in conf/) to perform interpolation of spectra.
+# Bruker OPUS Reader
+
+## Introduction
+The Python scripts in this project enable the reading of Bruker OPUS files.
 
 ## Usage
-You can run function brukeropusreader.opus_reader.opus reader to read opus file.
+Run the function brukeropusreader.opus_reader.opus_reader to read OPUS files.
 
 ## Structure of OPUS files
-OPUS file always consist of spectrum series. Each series is described by few parameters: NPT (number of points), FXV (value of first wavelength), LXV (value of last wavelength), END (address of spectra series).
+OPUS files consist of several spectrum series. 
+Each series is described by a few parameters: 
 
-This parameters can be found by searching for particular string in binary file(in ASCII). After founding occurence one have to move pointer few bytes further to read value.
-It is not established how far forward pointer should be moved. We empirically checked that is is 12 for end and 8 for npt, fxv, lxv.
-Beyond that, each file contains some metadata about hardware used for measurement.
+- NPT (number of points)
+- FXV (value of first wavelength)
+- LXV (value of last wavelength)
+- END (address of spectra series)
+
+This parameters are found by searching for ASCII strings in the binary files.
+After finding a match, we must move the pointer a few bytes further to read values.
+There is not a standard describing how much further the pointer should be moved. 
+We empirically checked that it is 12 bytes for END and 8 for NPT, FXV, and LXV.
+In addition, each file contains some metadata about the hardware used for measurement.
 
 ## Controversies
-Bruker OPUS is proprieratry file, therefore we don't know exactly what is its structure. We can just guess it. The main problem is - having few series how to decide which one is absorption spectra?
-Our solution (empirically developd) is:
-* Removed broken series (ones with fxv greater than lxv, without npt information, etc...)
-* Filter out interferrograms - taken from https://github.com/philipp-baumann/simplerspec. Interferrograms have starting value 0. We don't need them.
-* If after these two steps we still have more than one spectrum left we can choose one with highest average. We empirically checked that others are usually random noise with values near 0.
+Bruker OPUS is a proprietary file format, so we do not know its structure exactly.
+One problem is, given only a few series, how to decide which are absorption spectra?
+Our solution (empirically developed) is:
+
+1. Remove broken series (ones with FXV > LXV, missing NPT information, etc.)
+2. Remove interferograms. (See https://github.com/philipp-baumann/simplerspec) Interferrograms have a starting value of 0.
+3. If after these two steps we still have more than one series left, we can choose the one with the highest average value. We empirically checked that other series are usually random noise with values near 0.
 
 
+## Contact
+For developer issues, please start a ticket in Github. 
+You can also write to the dev team directly at bruker-opus-reader-dev@qed.ai. 
+For other issues, please write to: bruker-opus-reader@qed.ai
+
+--
+QED | https://qed.ai

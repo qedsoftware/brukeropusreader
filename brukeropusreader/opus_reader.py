@@ -20,17 +20,18 @@ def opus_reader(filepath):
 
     wave_num_abs_pair = reversed(zip(ab_wavenumbers, ab_spectra))
 
-    meta = get_meta_data(buff)
+    meta = get_metadata(buff)
 
     return OpusData(zip(*wave_num_abs_pair), meta=meta)
 
 
 def choose_ab(fxv_spc, spc, wavenumbers):
-    # Filtering interferograms - we don't need them
+    # Removing interferograms
     which_ig = np.where(fxv_spc == 0)[0]
     not_ig = np.setdiff1d(range(len(fxv_spc)), which_ig)
 
-    # Filtering single channel spectras - that's just guessing, but it works!
+    # Removing single channel spectras
+    # (heuristics are empirically derived)
     ab = []
     for x in not_ig:
         if np.average(spc[x]) > 0.25:
@@ -110,7 +111,7 @@ def generate_wavelengths(lxv_spc, fxv_spc, npt_spc):
     return wavenumbers
 
 
-def get_meta_data(buff):
+def get_metadata(buff):
     # Getting source of instruments
     all_ins = tuple(find_all('INS', buff))
     inst = unpack_from("<3s", buff, all_ins[-1] + 8)[0]
