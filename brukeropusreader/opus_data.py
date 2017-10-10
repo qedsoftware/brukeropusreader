@@ -44,8 +44,8 @@ class OpusData(object):
             csv_reader = csv.reader(csv_file)
             x_r = np.array(map(lambda x: float(x[1:]), next(csv_reader)[2:]))
             y_r = np.array(map(lambda x: float(x), next(csv_reader)[2:]))
-            dist = linalg.norm(y_r-self.interpolated_data[1], ord=1)
-            print "L1 distance between rbart and python versions:", dist
+            dist = linalg.norm(y_r - self.interpolated_data[1], ord=1)
+            print("L1 distance between rbart and python versions:", dist)
             plt.plot(x_r, y_r, 'bo')
             plt.plot(self.interpolated_data[0],
                      self.interpolated_data[1],
@@ -56,7 +56,7 @@ class OpusData(object):
         wunit = (conf.wave_start - conf.wave_end) / (float(conf.iwsize - 1))
         a = conf.wave_start + wunit
         iwavenumber = [0] * conf.iwsize
-        for i in xrange(len(iwavenumber)):
+        for i in range(len(iwavenumber)):
             a -= wunit
             iwavenumber[i] = a
         return iwavenumber
