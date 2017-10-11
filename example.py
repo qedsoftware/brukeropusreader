@@ -19,7 +19,7 @@ def main(path_to_opus_files):
                 od.plot_raw()
             except Exception as e:
                 i += 1
-                print i, ":", name, str(e)
+                print(i, ":", name, str(e))
 
 
 if __name__ == '__main__':
