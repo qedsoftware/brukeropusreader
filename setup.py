@@ -7,4 +7,7 @@ setup(name='bruker-opus-reader',
       author='QED',
       author_email='bruker-opus-reader-dev@qed.ai',
       packages=['brukeropusreader'],
+      python_requires=">=3",
+      license="GPLv3",
+      url="https://github.com/qedsoftware/bruker-opus-reader"
       )
