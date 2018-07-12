@@ -1,4 +1,4 @@
-from brukeropusreader.opus_reader import opus_reader
+from brukeropusreader import opus_reader
 
 import sys
 import argparse
