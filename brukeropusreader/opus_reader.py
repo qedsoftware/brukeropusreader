@@ -110,19 +110,23 @@ def generate_wavelengths(lxv_spc, fxv_spc, npt_spc):
         wavenumbers.append(arr)
     return wavenumbers
 
-def find_key(buff,key):
+
+def find_key(buff, key):
     hit = buff.find(key) + 8
     value = unpack_from('2000s', buff, hit)[0]
     value = value[:value.find(b'\x00')]
     return value
 
+
 def get_metadata(buff):
-    all_keys=['INS','SRC','DAT','SNM'] #Further keys can be added here e.g. 'TIM', 'SFM'...
+    meta = {}
+    all_keys = ['INS', 'SRC', 'DAT', 'SNM', 'TIM', 'SFM']
     for k in all_keys:
-        keystr= k
-        value=find_key(buff,keystr.encode('utf-8'))
+        keystr = k
+        value = find_key(buff, keystr.encode('utf-8'))
         meta[k] = value
-    return meta    
+    return meta
+
 
 def filter_spc_params(end_spc, spc_param_list, npt_all):
     def indexes_of_valid_series(arr):
