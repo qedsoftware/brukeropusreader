@@ -111,24 +111,20 @@ def generate_wavelengths(lxv_spc, fxv_spc, npt_spc):
     return wavenumbers
 
 
+def find_key(buff, key):
+    hit = buff.find(key) + 8
+    value = unpack_from('2000s', buff, hit)[0]
+    value = value[:value.find(b'\x00')]
+    return value
+
+
 def get_metadata(buff):
-    # Getting source of instruments
-    all_ins = tuple(find_all(b'INS', buff))
-    inst = unpack_from('<3s', buff, all_ins[-1] + 8)[0]
-    # Getting source of infrared <NIR/MIR>
-    all_src = tuple(find_all(b'SRC', buff))
-    src = unpack_from('<3s', buff, all_src[-1] + 5)[0]
-
-    dat = buff.find(b'DAT') + 8
-    scandate = unpack_from('10s', buff, dat)[0]
-
-    snm = buff.find(b'SNM') + 8
-    snm_lab_material = unpack_from('22s', buff, snm)[0]
-
-    meta = {'ins': inst,
-            'src': src,
-            'date': scandate,
-            'snm': snm_lab_material}
+    meta = {}
+    all_keys = ['INS', 'SRC', 'DAT', 'SNM', 'TIM', 'SFM']
+    for k in all_keys:
+        keystr = k
+        value = find_key(buff, keystr.encode('utf-8'))
+        meta[k] = value
     return meta
 
 
