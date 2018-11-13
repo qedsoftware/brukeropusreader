@@ -9,12 +9,12 @@ class NoAbsorbanceSpectra(Exception):
     pass
 
 
-def opus_reader(filepath):
+def read_file(filepath):
     with open(filepath, 'rb') as f:
         buff = f.read()
 
-    # Reading all waves and spectras
-    fxv_spc, spc, wavenumbers = read_all_spectras(buff)
+    # Reading all waves and spectra
+    fxv_spc, spc, wavenumbers = read_all_spectra(buff)
     # Choose best ab spectra
     ab_spectra, ab_wavenumbers = choose_ab(fxv_spc, spc, wavenumbers)
 
@@ -22,7 +22,9 @@ def opus_reader(filepath):
 
     meta = get_metadata(buff)
 
-    return OpusData(list(zip(*wave_num_abs_pair)), meta=meta)
+    wave_nums, spectrum = list(zip(*wave_num_abs_pair))
+
+    return OpusData(wave_nums, spectrum, meta=meta)
 
 
 def choose_ab(fxv_spc, spc, wavenumbers):
@@ -30,7 +32,7 @@ def choose_ab(fxv_spc, spc, wavenumbers):
     which_ig = np.where(fxv_spc == 0)[0]
     not_ig = np.setdiff1d(range(len(fxv_spc)), which_ig)
 
-    # Removing single channel spectras
+    # Removing single channel spectra
     # (heuristics are empirically derived)
     ab = []
     for x in not_ig:
@@ -67,7 +69,7 @@ def filter_unpaired(fxv_all, lxv_all):
     return fxv_all, lxv_all
 
 
-def read_all_spectras(buff):
+def read_all_spectra(buff):
     end, npt_all, fxv_all, lxv_all = keyword_positions(buff)
     fxv_all, lxv_all = filter_unpaired(fxv_all, lxv_all)
 
@@ -79,7 +81,7 @@ def read_all_spectras(buff):
 
     # Filtering some corrupted series
     param_spc = filter_spc_params(end_spc, spc_param_list, npt_all)
-    # Number of points in correct spectras
+    # Number of points in correct spectra
     npt_spc = [unpack_from('<i', buff, adr)[0] for adr in param_spc['npt']]
     npt_spc = np.array(npt_spc)
 
