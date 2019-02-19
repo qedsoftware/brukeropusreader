@@ -4,5 +4,11 @@
 #
 #    pip-compile --output-file requirements.txt requirements.in
 #
-numpy==1.13.3
-scipy==0.19.1
+cycler==0.10.0            # via matplotlib
+kiwisolver==1.0.1         # via matplotlib
+matplotlib==3.0.2
+numpy==1.16.1
+pyparsing==2.3.1          # via matplotlib
+python-dateutil==2.8.0    # via matplotlib
+scipy==1.2.1
+six==1.12.0               # via cycler, python-dateutil

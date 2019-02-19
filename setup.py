@@ -8,7 +8,7 @@ setup(name='brukeropusreader',
       author_email='brukeropusreader-dev@qed.ai',
       packages=['brukeropusreader'],
       python_requires=">=3",
-      install_requires=['numpy==1.13.3', 'scipy==0.19.1'],
+      install_requires=['numpy>=1.13.3', 'scipy>=0.19.1', 'matplotlib>=3.0.2'],
       license="GPLv3",
       url="https://github.com/qedsoftware/brukeropusreader"
       )
