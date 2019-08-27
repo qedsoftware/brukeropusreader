@@ -1,7 +1,7 @@
+from .opus_parser import read_file
 from .opus_data import OpusData
-from .opus_reader import read_file
 
-name = 'brukeropusreader'
+name = "brukeropusreader"
 
-__all__ = ['OpusData', 'read_file']
-__version__ = '1.2'
+__all__ = ["read_file", "OpusData"]
+__version__ = "1.3"

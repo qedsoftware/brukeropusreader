@@ -15,47 +15,22 @@ from brukeropusreader import read_file
 opus_data = read_file('opus_file.0')
 ```
 
-`OpusData` consists of three fields `wave_nums`, `spectrum` and `meta`:
+`OpusData` is a dict consisting of all fields found in opus file:
 ```
-print(f'Dimension of data: '
-      f'{len(opus_data.wave_nums)}')
+print(f'Parsed fields: '
+      f'{list(opus_data.keys())}')
 
-print(f'Spectrum range: ['
-      f'{min(opus_data.spectrum)}; '
-      f'{max(opus_data.spectrum)}]')
-
-print(f'Metadata: '
-      f'{opus_data.meta}')
+print(f'Absorption spectrum: '
+      f'{opus_data["AB"]}'
 ```
 
-Spectrum can be plotted with `matplotlib` library:
-```
-plt.plot(opus_data.wave_nums, opus_data.spectrum)
-plt.show()
-```
 For full code see [example](example.py).
 
-## Structure of OPUS files
-OPUS files consist of several series of spectra. 
-Each series is described by a few parameters: 
+## Algorithm
+Algorithm taken from
+https://bitbucket.org/hirschbeutel/ono/src/default/ono/bruker_opus_filereader.py
 
-- NPT (number of points)
-- FXV (value of first wavelength)
-- LXV (value of last wavelength)
-- END (address of spectra series)
-
-These parameters are found by searching for ASCII strings in the binary files.
-After finding a match with one of these parameters, we move the pointer a few bytes further to read the values.
-Unfortunately, there is no published open standard describing how much further the pointer should be moved.
-We empirically checked that this shift factor is 8 bytes for NPT, FXV, and LXV, and 12 bytes for END.
-In addition, each file contains some metadata about the hardware used for measurement.
-
-## Known issues
-As Bruker's OPUS file format is not described openly, we do not know its exact structure.  One problem is, given only a few series, how to decide which are absorption spectra? Our solution, empirically developed, is as follows:
-
-1. Remove broken series (such as ones where FXV > LXV, missing NPT information, etc.)
-2. Remove interferograms. (See [simplerspec](https://github.com/philipp-baumann/simplerspec).) Interferograms have a starting value of 0.
-3. If after these two steps we still have more than one series left, choose the one with highest average value. We empirically verified that other series are usually random noise with values near 0.
+Author: @twagner
 
 ## Contact
 For developer issues, please start a ticket in Github. 
