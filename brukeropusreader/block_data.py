@@ -1,5 +1,4 @@
 from collections import defaultdict
-from dataclasses import dataclass
 from typing import Callable, Tuple
 
 from brukeropusreader.block_parser import parse_series, parse_param, parse_text
@@ -46,13 +45,20 @@ DIFFERENT_BLOCKS = {
 }
 
 
-@dataclass
 class BlockMeta:
-    data_type: int
-    channel_type: int
-    text_type: int
-    chunk_size: int
-    offset: int
+    def __init__(
+        self,
+        data_type: int,
+        channel_type: int,
+        text_type: int,
+        chunk_size: int,
+        offset: int,
+    ):
+        self.data_type = data_type
+        self.channel_type = channel_type
+        self.text_type = text_type
+        self.chunk_size = chunk_size
+        self.offset = offset
 
     def get_name_and_parser(self) -> Tuple[str, Callable]:
         if self.data_type == 0:

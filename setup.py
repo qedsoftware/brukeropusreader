@@ -3,7 +3,7 @@ from distutils.core import setup
 
 setup(
     name="brukeropusreader",
-    version="1.3.2",
+    version="1.3.3",
     description="Bruker OPUS File Reader",
     author="QED",
     author_email="brukeropusreader-dev@qed.ai",
