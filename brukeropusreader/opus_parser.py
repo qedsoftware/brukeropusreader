@@ -1,6 +1,6 @@
 from typing import List
 
-from brukeropusreader.block.data import BlockMeta, UnknownBlockType
+from brukeropusreader.block_data import BlockMeta, UnknownBlockType
 from brukeropusreader.constants import (
     HEADER_LEN,
     FIRST_CURSOR_POSITION,

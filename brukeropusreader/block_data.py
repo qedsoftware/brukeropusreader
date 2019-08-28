@@ -2,7 +2,7 @@ from collections import defaultdict
 from dataclasses import dataclass
 from typing import Callable, Tuple
 
-from brukeropusreader.block.parser import parse_series, parse_param, parse_text
+from brukeropusreader.block_parser import parse_series, parse_param, parse_text
 
 
 class UnknownBlockType(Exception):
