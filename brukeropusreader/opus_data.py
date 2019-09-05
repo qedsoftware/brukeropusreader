@@ -12,7 +12,7 @@ class OpusData(dict):
         if wavenums:
             return x_no_unit
         else:
-            10_000_000 / x_no_unit
+            return 10_000_000 / x_no_unit
 
     def interpolate(self, start, stop, num, spec_name="AB"):
         xav = self.get_range(spec_name=spec_name)
