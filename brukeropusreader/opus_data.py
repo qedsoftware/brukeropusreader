@@ -7,7 +7,8 @@ class OpusData(dict):
         param_key = f"{spec_name} Data Parameter"
         fxv = self[param_key]["FXV"]
         lxv = self[param_key]["LXV"]
-        npt = self[param_key]["NPT"]
+        # NPT and REAL NUMBER OF POINTS may differ
+        npt = self[spec_name].shape[0]
         x_no_unit = np.linspace(fxv, lxv, npt)
         if wavenums:
             return x_no_unit
