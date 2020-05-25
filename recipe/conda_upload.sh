@@ -21,7 +21,7 @@ export CONDA_BLD_PATH="$HOME/conda-bld"
 mkdir -p "$CONDA_BLD_PATH"
 
 ## Here we will choose depending on the way this script is run
-if [[ $user != "travis" ]]; then
+if [[ $USER != "travis" ]]; then
   ## if we are in local
   TRAVIS_BRANCH=$(git rev-parse --abbrev-ref HEAD)
   if [[ $TRAVIS_BRANCH == $LAST_TAG ]]; then
@@ -30,7 +30,7 @@ if [[ $user != "travis" ]]; then
   ## else this run by TravisCI (this are env variables)
 fi
 
-echo "user: $USER   current branch: $TRAVIS_BRANCH "
+echo "user: $USER   current branch: $TRAVIS_BRANCH last_tag: $LAST_TAG next_tag: $NEXT_TAG"
 
 if [[ $TRAVIS_BRANCH == "master" ]]; then
   ## we build the current master repository (i.e.the last development version)
