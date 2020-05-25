@@ -39,11 +39,11 @@ if [[ $TRAVIS_BRANCH == "master" ]]; then
   echo "***************************************************************************************************************"
   echo "--> BUILDING $CONDA_BLD_PATH/$OS/$PKG_NAME-$VERSION-$DEVSTRING.tar.bz2"
   echo "***************************************************************************************************************"
-  ##conda build .
+  conda build .
   echo "***************************************************************************************************************"
   echo "--> UPLOADING $CONDA_BLD_PATH/$OS/$PKG_NAME-$VERSION-$DEVSTRING.tar.bz2 to <dev> anaconda repository"
   echo "***************************************************************************************************************"
-  ##anaconda -t "$CONDA_UPLOAD_TOKEN" upload --force -u $ANACONDA_USER -l dev "$CONDA_BLD_PATH/$OS/$PKG_NAME-$VERSION-$DEVSTRING.tar.bz2"
+  anaconda -t "$CONDA_UPLOAD_TOKEN" upload --force -u $ANACONDA_USER -l dev "$CONDA_BLD_PATH/$OS/$PKG_NAME-$VERSION-$DEVSTRING.tar.bz2"
 fi
 
 if [[ $TRAVIS_BRANCH == $TRAVIS_TAG ]]; then
@@ -53,11 +53,11 @@ if [[ $TRAVIS_BRANCH == $TRAVIS_TAG ]]; then
   echo "***************************************************************************************************************"
   echo "--> BUILDING $CONDA_BLD_PATH/$OS/$PKG_NAME-$VERSION-$DEVSTRING.tar.bz2"
   echo "***************************************************************************************************************"
-  ##conda build .
+  conda build .
   echo "***************************************************************************************************************"
   echo "--> UPLOADING $CONDA_BLD_PATH/$OS/$PKG_NAME-$VERSION-$DEVSTRING.tar.bz2 to <main> anaconda repository"
   echo "***************************************************************************************************************"
-  ##anaconda -t "$CONDA_UPLOAD_TOKEN" upload --force -u $ANACONDA_USER  "$CONDA_BLD_PATH/$OS/$PKG_NAME-$VERSION-$DEVSTRING.tar.bz2"
+  anaconda -t "$CONDA_UPLOAD_TOKEN" upload --force -u $ANACONDA_USER  "$CONDA_BLD_PATH/$OS/$PKG_NAME-$VERSION-$DEVSTRING.tar.bz2"
 fi
 
 exit $?
