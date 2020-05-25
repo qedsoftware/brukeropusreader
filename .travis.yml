@@ -1,0 +1,39 @@
+language: python
+
+python:
+  - "3.7"   # we built a noarch (so in principle any recent version of python work)
+
+# limit git clone depth to 10 commits
+git:
+  depth: 10
+
+install:
+  - sudo apt-get update
+  - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
+  - bash miniconda.sh -b -p $HOME/miniconda
+  - source "$HOME/miniconda/etc/profile.d/conda.sh"
+  - hash -r
+  - conda config --set always_yes yes --set changeps1 no
+  - conda update -q conda
+  - conda config --add channels conda-forge
+  - conda config --add channels spectrocat
+  - conda config --set channel_priority strict
+
+script:
+  - conda create -n py38 python=3.8 pytest numpy scipy
+  - conda activate py38
+  - pip install .
+  - pytest
+  - conda create -n py36 python=3.6 pytest numpy scipy
+  - conda activate py36
+  - pip install .
+  - pytest
+  - conda create -n py37 python=3.7 pytest numpy scipy
+  - conda activate py37
+  - pip install .
+  - pytest
+
+after_success:
+  - conda activate py37
+  - conda install conda-build anaconda-client
+  - bash recipe/conda_upload.sh
