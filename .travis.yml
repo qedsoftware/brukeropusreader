@@ -1,11 +1,11 @@
 language: python
 
 python:
-  - "3.7"   # we built a noarch (so in principle any recent version of python work)
+  - "3.7"
 
-# limit git clone depth to 10 commits
+# limit git clone depth to 50 commits
 git:
-  depth: 10
+  depth: 50
 
 install:
   - sudo apt-get update
@@ -20,20 +20,13 @@ install:
   - conda config --set channel_priority strict
 
 script:
-  - conda create -n py38 python=3.8 pytest numpy scipy
-  - conda activate py38
-  - pip install .
-  - pytest
-  - conda create -n py36 python=3.6 pytest numpy scipy
-  - conda activate py36
-  - pip install .
-  - pytest
-  - conda create -n py37 python=3.7 pytest numpy scipy
-  - conda activate py37
+  - conda create -n py$TRAVIS_PYTHON_VERSION python=$TRAVIS_PYTHON_VERSION pytest numpy scipy
+  - conda activate py$TRAVIS_PYTHON_VERSION
+  - conda update pytest
   - pip install .
   - pytest
 
 after_success:
-  - conda activate py37
+  - conda activate py$TRAVIS_PYTHON_VERSION
   - conda install conda-build anaconda-client
   - bash recipe/conda_upload.sh

@@ -18,7 +18,6 @@ build:
 
 requirements:
   build:
-    - {{ compiler('cxx') }}
     - python
   host:
     - python
@@ -31,6 +30,7 @@ requirements:
     - scipy
   test:
     - python             {{ python }}
+    - pytest
 
 test:
   script_env:
@@ -40,10 +40,12 @@ test:
     - brukeropusreader
 
 about:
-  home: "https://github.com/qedsoftware/brukeropusreader"
+  home: "https://github.com/spectrochempy/brukeropusreader"
   license: GPLv3
   license_family: GPL3
   summary: "Bruker OPUS File Reader"
+  doc_url: "https://github.com/spectrochempy/brukeropusreader"
+  dev_url: "https://github.com/spectrochempy/brukeropusreader"
 
 extra:
   recipe-maintainers:

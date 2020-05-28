@@ -3,8 +3,7 @@
 ## adapted on https://gist.github.com/zshaheen/fe76d1507839ed6fbfbccef6b9c13ed9
 
 PKG_NAME=brukeropusreader
-ANACONDA_USER=spectrocat
-OS=noarch ## OS=$TRAVIS_OS_NAME-64
+OS=noarch
 conda config --set anaconda_upload no
 
 ## TAG
@@ -34,7 +33,7 @@ echo "user: $USER   current branch: $TRAVIS_BRANCH last_tag: $LAST_TAG next_tag:
 
 if [[ $TRAVIS_BRANCH == "master" ]]; then
   ## we build the current master repository (i.e.the last development version)
-  export DEVSTRING="dev"
+  export DEVSTRING="latest"
   export VERSION="$NEXT_TAG"
   echo "***************************************************************************************************************"
   echo "--> BUILDING $CONDA_BLD_PATH/$OS/$PKG_NAME-$VERSION-$DEVSTRING.tar.bz2"
@@ -44,6 +43,7 @@ if [[ $TRAVIS_BRANCH == "master" ]]; then
   echo "--> UPLOADING $CONDA_BLD_PATH/$OS/$PKG_NAME-$VERSION-$DEVSTRING.tar.bz2 to <dev> anaconda repository"
   echo "***************************************************************************************************************"
   anaconda -t "$CONDA_UPLOAD_TOKEN" upload --force -u $ANACONDA_USER -l dev "$CONDA_BLD_PATH/$OS/$PKG_NAME-$VERSION-$DEVSTRING.tar.bz2"
+  exit $?
 fi
 
 if [[ $TRAVIS_BRANCH == $TRAVIS_TAG ]]; then
@@ -58,6 +58,34 @@ if [[ $TRAVIS_BRANCH == $TRAVIS_TAG ]]; then
   echo "--> UPLOADING $CONDA_BLD_PATH/$OS/$PKG_NAME-$VERSION-$DEVSTRING.tar.bz2 to <main> anaconda repository"
   echo "***************************************************************************************************************"
   anaconda -t "$CONDA_UPLOAD_TOKEN" upload --force -u $ANACONDA_USER  "$CONDA_BLD_PATH/$OS/$PKG_NAME-$VERSION-$DEVSTRING.tar.bz2"
+  exit $?
 fi
 
+if [ ! $NUMBER ]
+then
+   NUMBER="0"
+fi
+
+if [[ $TRAVIS_BRANCH == "develop" ]]; then
+  ## we build the current develop repository (for testing purpose)
+  export DEVSTRING="test$NUMBER"
+  export VERSION="$NEXT_TAG"
+  echo "***************************************************************************************************************"
+  echo "--> BUILDING $CONDA_BLD_PATH/$OS/$PKG_NAME-$VERSION-$DEVSTRING.tar.bz2"
+  echo "***************************************************************************************************************"
+  conda build .
+  echo "***************************************************************************************************************"
+  echo "--> UPLOADING $CONDA_BLD_PATH/$OS/$PKG_NAME-$VERSION-$DEVSTRING.tar.bz2 to <test> anaconda repository"
+  echo "***************************************************************************************************************"
+  anaconda -t "$CONDA_UPLOAD_TOKEN" upload --force -u $ANACONDA_USER -l test "$CONDA_BLD_PATH/$OS/$PKG_NAME-$VERSION-$DEVSTRING.tar.bz2"
+  exit $?
+fi
+
+## this is a local "dev" release not yet merged with develop (will not be uploaded)
+export DEVSTRING="test$NUMBER"
+export VERSION="$NEXT_TAG"
+echo "***************************************************************************************************************"
+echo "--> BUILDING $CONDA_BLD_PATH/$OS/$PKG_NAME-$VERSION-$DEVSTRING.tar.bz2"
+echo "***************************************************************************************************************"
+conda build .
 exit $?
