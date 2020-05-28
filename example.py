@@ -11,14 +11,17 @@ def main(path_to_file):
     print(f"Data fields: " f"{list(opus_data.keys())}")
 
     ab_x = opus_data.get_range("AB")
+    # the "AB" data can contain more null values at the end (at least 1)
+    # so the getting useful data requires slicing the array:
+    abs = opus_data["AB"][0:len(ab_x)]
     print(f"Absorption spectrum range: " f"{ab_x[0]} {ab_x[-1]}")
-    print(f"Absorption elements num: " f'{len(opus_data["AB"])}')
+    print(f"Absorption elements num: " f'{len(abs)}')
 
     try:
         import matplotlib.pyplot as plt
 
         print("Plotting AB")
-        plt.plot(opus_data.get_range("AB"), opus_data["AB"])
+        plt.plot(opus_data.get_range("AB"), abs)
         plt.show()
 
         print("Plotting interpolated AB")
