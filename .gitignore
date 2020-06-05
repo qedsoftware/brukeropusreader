@@ -1,2 +1,7 @@
 *.pyc
 *.csv
+
+# dir
+.idea/
+conda-bld/
+*.egg-info/

@@ -1,0 +1,32 @@
+language: python
+
+python:
+  - "3.7"
+
+# limit git clone depth to 50 commits
+git:
+  depth: 50
+
+install:
+  - sudo apt-get update
+  - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
+  - bash miniconda.sh -b -p $HOME/miniconda
+  - source "$HOME/miniconda/etc/profile.d/conda.sh"
+  - hash -r
+  - conda config --set always_yes yes --set changeps1 no
+  - conda update -q conda
+  - conda config --add channels conda-forge
+  - conda config --add channels spectrocat
+  - conda config --set channel_priority strict
+
+script:
+  - conda create -n py$TRAVIS_PYTHON_VERSION python=$TRAVIS_PYTHON_VERSION pytest numpy scipy
+  - conda activate py$TRAVIS_PYTHON_VERSION
+  - conda update pytest
+  - pip install .
+  - pytest
+
+after_success:
+  - conda activate py$TRAVIS_PYTHON_VERSION
+  - conda install conda-build anaconda-client
+  - bash recipe/conda_upload.sh
