@@ -17,7 +17,7 @@ class OpusData(dict):
 
     def interpolate(self, start, stop, num, spec_name="AB"):
         xav = self.get_range(spec_name=spec_name)
-        yav = self[spec_name]
+        yav = self[spec_name][0:len(xav)]
         iwave_nums = np.linspace(start, stop, num)
         f2 = interp1d(xav, yav, kind="cubic", fill_value="extrapolate")
         return iwave_nums, f2(iwave_nums)
