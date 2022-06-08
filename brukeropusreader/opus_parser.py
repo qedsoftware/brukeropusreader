@@ -61,5 +61,12 @@ def parse_data(data: bytes, blocks_meta: List[BlockMeta]) -> OpusData:
         except UnknownBlockType:
             continue
         parsed_data = parser(data, block_meta)
+        # in some instances, multiple entries - in particular 'AB' seem to be present
+        # they are added with a key ending by '_(1)', '_(2)', etc...
+        if name in opus_data.keys():
+            i = 1
+            while name + '_(' + str(i) + ')' in opus_data.keys():
+                i += 1
+            name = name + '_(' + str(i) + ')'
         opus_data[name] = parsed_data
     return opus_data
