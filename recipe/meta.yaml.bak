@@ -1,0 +1,52 @@
+{% set name = "brukeropusreader" %}
+{% set version = environ['VERSION'] %}
+
+package:
+  name: "{{ name|lower }}"
+  version: "{{ version }}"
+
+source:
+  path: ../
+
+build:
+  script_env:
+    - VERSION
+    - CONDA_BLD_PATH
+  string: {{ environ['DEVSTRING'] }}
+  noarch: python
+  script: "{{ PYTHON }} -m pip install . -vv"
+
+requirements:
+  build:
+    - python
+  host:
+    - python
+    - numpy
+    - pip
+    - scipy
+  run:
+    - python
+    - numpy
+    - scipy
+  test:
+    - python             {{ python }}
+    - pytest
+
+test:
+  script_env:
+    - VERSION
+    - CONDA_BLD_PATH
+  imports:
+    - brukeropusreader
+
+about:
+  home: "https://github.com/spectrochempy/brukeropusreader"
+  license: GPLv3
+  license_family: GPL3
+  summary: "Bruker OPUS File Reader"
+  doc_url: "https://github.com/spectrochempy/brukeropusreader"
+  dev_url: "https://github.com/spectrochempy/brukeropusreader"
+
+extra:
+  recipe-maintainers:
+    - fernandezc

@@ -21,6 +21,12 @@ def read_text_type(header: bytes, cursor: int) -> int:
     return unpack(UNSIGNED_CHAR, header[p1:p2])[0]
 
 
+def read_additional_type(header: bytes, cursor: int) -> int:
+    p1 = cursor + 3
+    p2 = cursor + 4
+    return unpack(UNSIGNED_CHAR, header[p1:p2])[0]
+
+
 def read_chunk_size(header: bytes, cursor: int) -> int:
     p1 = cursor + 4
     p2 = cursor + 8

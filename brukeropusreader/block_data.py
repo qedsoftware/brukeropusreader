@@ -19,22 +19,30 @@ BLOCK_0 = defaultdict(
     },
 )
 
-BLOCK_7 = {4: "ScSm", 8: "IgSm", 12: "PhSm", 132: "ScSm_(1)", 136: "IgSm_(1)"}
+# other sample spectral data (single channel, interferogram, power spectrum, ...)
+BLOCK_7 = {4: "ScSm", 8: "IgSm", 12: "PhSm", 56: "PwSm", 132: "ScSm_(1)", 136: "IgSm_(1)"}
 
-BLOCK_11 = {4: "ScRf", 8: "IgRf", 132: "ScRf_(1)", 136: "IgRf_(1)" }
+# other reference spectral data (single channel, interferogram, power spectrum, ...)
+BLOCK_11 = {4: "ScRf", 8: "IgRf", 56: "PwRf", 132: "ScRf_(1)", 136: "IgRf_(1)"}
 
+# parameters of other sample spectral data
 BLOCK_23 = {
     4: "ScSm Data Parameter",
     8: "IgSm Data Parameter",
     12: "PhSm Data Parameter",
+    56: "PwSm Data Parameter",
     132: "ScSm_(1) Data Parameter",
-    136: "IgSm_(1) Data Parameter"
+    136: "IgSm_(1) Data Parameter",
 }
 
-BLOCK_27 = {4: "ScRf Data Parameter",
-            8: "IgRf Data Parameter",
-            132: "ScRf_(1) Data Parameter",
-            136: "IgRf_(1) Data Parameter"}
+# parameters of other reference spectral data
+BLOCK_27 = {
+    4: "ScRf Data Parameter",
+    8: "IgRf Data Parameter",
+    56: "PwRf Data Parameter",
+    132: "ScRf_(1) Data Parameter",
+    136: "IgRf_(1) Data Parameter",
+}
 
 DIFFERENT_BLOCKS = {
     31: "AB Data Parameter",
@@ -56,12 +64,14 @@ class BlockMeta:
         data_type: int,
         channel_type: int,
         text_type: int,
+        additional_type: int,
         chunk_size: int,
         offset: int,
     ):
         self.data_type = data_type
         self.channel_type = channel_type
         self.text_type = text_type
+        self.additional_type = additional_type
         self.chunk_size = chunk_size
         self.offset = offset
 
