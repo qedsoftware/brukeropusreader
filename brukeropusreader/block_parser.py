@@ -6,13 +6,17 @@ from brukeropusreader.constants import (
     NULL_BYTE,
     ENCODING_LATIN,
     ENCODING_UTF,
-    NULL_STR)
+    NULL_STR,
+)
 from brukeropusreader.opus_reader import read_chunk
 from struct import unpack, error
 import numpy as np
 
 
 def parse_param(data: bytes, block_meta):
+    """parse data blocks of parameters
+
+    BLOCK_23, BLOCK_27"""
     cursor = 0
     chunk = read_chunk(data, block_meta)
     params = {}
