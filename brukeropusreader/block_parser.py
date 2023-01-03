@@ -6,7 +6,10 @@ from brukeropusreader.constants import (
     NULL_BYTE,
     ENCODING_LATIN,
     ENCODING_UTF,
-    NULL_STR)
+    NULL_STR,
+    RAW0_TYPES,
+    RAW0_FLAGS,
+)
 from brukeropusreader.opus_reader import read_chunk
 from struct import unpack, error
 import numpy as np
@@ -47,8 +50,18 @@ def parse_text(data: bytes, block_meta):
     return chunk.decode(ENCODING_LATIN).strip(NULL_STR)
 
 
+def _parse_raw0(chunk: bytes):
+    arr = []
+    for i in range(0, len(chunk), 8):
+        arr.append(
+            unpack("<xh3xh", chunk[i : i + 8])[::-1]
+            + tuple(chunk[i + 4] & m for m in RAW0_FLAGS)
+        )
+    return arr
+
+
 def parse_series(data: bytes, block_meta):
     chunk = read_chunk(data, block_meta)
-    fmt = f"<{block_meta.chunk_size}f"
-    values = unpack(fmt, chunk)
-    return np.array(values)
+    if block_meta.channel_type == 0:
+        return np.array(_parse_raw0(chunk), dtype=RAW0_TYPES)
+    return np.frombuffer(chunk, dtype="<f")
