@@ -53,10 +53,8 @@ def parse_text(data: bytes, block_meta):
 def _parse_raw0(chunk: bytes):
     arr = []
     for i in range(0, len(chunk), 8):
-        arr.append(
-            unpack("<xh3xh", chunk[i : i + 8])[::-1]
-            + tuple(chunk[i + 4] & m for m in RAW0_FLAGS)
-        )
+        adc, flags, xa = unpack("<xhxBxh", chunk[i : i + 8])
+        arr.append((xa, adc) + tuple(bool(flags & m) for m in RAW0_FLAGS))
     return arr
 
 
