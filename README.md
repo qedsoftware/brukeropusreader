@@ -38,8 +38,7 @@ You can also write to the dev team directly at brukeropusreader-dev@qed.ai.
 For other issues, please write to: brukeropusreader@qed.ai
 
 ## License
-Copyright (c) 2018 [Quantitative Engineering Design](https://qed.ai). All rights reserved.
-This project is released under the terms of the AGPL license, which is included in LICENSE.txt.
+This project is released under the terms of the LGPLv3 license, which is included in LICENSE.txt.
 
 --
 QED | https://qed.ai
