@@ -20,6 +20,7 @@ BLOCK_0 = defaultdict(
 )
 
 BLOCK_7 = {
+    0: "Raw0",
     4: "ScSm",
     8: "IgSm",
     12: "PhSm",
@@ -34,6 +35,7 @@ BLOCK_11 = {
 }
 
 BLOCK_23 = {
+    0: "Raw0 Data Parameter",
     4: "ScSm Data Parameter",
     8: "IgSm Data Parameter",
     12: "PhSm Data Parameter",
