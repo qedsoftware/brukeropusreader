@@ -1,4 +1,5 @@
 from struct import unpack
+import numpy as np
 
 from brukeropusreader.constants import UNSIGNED_INT, UNSIGNED_CHAR
 
