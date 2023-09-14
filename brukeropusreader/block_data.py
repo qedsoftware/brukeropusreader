@@ -83,7 +83,9 @@ class BlockMeta:
             return BLOCK_7[self.channel_type], parse_series
         elif self.data_type == 11:
             return BLOCK_11[self.channel_type], parse_series
-        elif self.data_type == 15:
+        elif self.data_type == 15 and self.channel_type==16 and self.chunk_size <1332 and self.text_type == 0:
+            return "AB", parse_series
+        elif self.data_type == 15 and self.channel_type==16 and self.chunk_size >=1332 and self.offset<100000:
             return "AB", parse_series
         elif self.data_type == 23:
             return BLOCK_23[self.channel_type], parse_param
